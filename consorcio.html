@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Consórcio Honda — Simulação de Parcelas</title>
+    <style>
+        :root{--red:#c8102e;--black:#0b0b0b;--white:#ffffff;--green:#25D366}
+        *{box-sizing:border-box}
+        body{
+            font-family: 'Segoe UI', sans-serif;
+            margin:0; background: #f8f9fa; color: var(--black);
+        }
+        header{background: var(--black); color: #fff; padding: 15px; text-align: center; border-bottom: 3px solid var(--red)}
+        .container{max-width: 600px; margin: 20px auto; padding: 20px;}
+        
+        .moto-info{
+            background: #fff; border-radius: 15px; padding: 20px; 
+            text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 20px; border-top: 5px solid var(--black);
+        }
+        #motoImg{max-width: 180px; height: auto; margin-bottom: 10px}
+        
+        .form-card{
+            background: #fff; border-radius: 15px; padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h2{margin: 0 0 20px 0; font-size: 20px; color: var(--red); text-align: center}
+        
+        label{display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #444}
+        input, select{
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;
+            margin-bottom: 18px; font-size: 15px;
+        }
+        
+        .parcela-box{
+            background: #fff8e1; border: 1px solid #ffe082; padding: 15px;
+            border-radius: 8px; margin-bottom: 20px; text-align: center;
+        }
+        .parcela-box span{ font-size: 22px; font-weight: 800; color: #ffa000; }
+
+        button{
+            width: 100%; padding: 16px; background: var(--green); color: #fff;
+            border: none; border-radius: 8px; font-size: 16px; font-weight: 800;
+            cursor: pointer; text-transform: uppercase;
+        }
+        button:hover{filter: brightness(1.1)}
+
+        .back-btn{
+            display: inline-block; margin-bottom: 15px; text-decoration: none;
+            color: #666; font-size: 14px; font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="font-weight:900;">CONSÓRCIO HONDA REVEMAR</div>
+</header>
+
+<div class="container">
+    <a href="index.html" class="back-btn">← Ver outros modelos</a>
+
+    <div class="moto-info">
+        <img id="motoImg" src="" alt="Moto">
+        <h2 id="motoNome" style="margin:0; color:var(--black)">Carregando...</h2>
+        <p id="motoPreco" style="font-size: 13px; color: #888; margin-top:5px"></p>
+    </div>
+
+    <div class="form-card">
+        <h2>Simular meu Plano</h2>
+        <form id="consForm">
+            <label>Qual seu nome?</label>
+            <input type="text" id="nome" required placeholder="Digite seu nome completo">
+
+            <label>Você tem pressa para pegar a moto?</label>
+            <select id="pressa" required>
+                <option value="Sim, quero dar lance">Sim, quero dar lance (Rápido)</option>
+                <option value="Não, posso esperar sorteio">Não, quero pagar a menor parcela</option>
+            </select>
+
+            <label>Escolha o Prazo do Plano</label>
+            <select id="prazo" onchange="atualizarParcela()" required>
+                <option value="80">80 meses (Menor parcela)</option>
+                <option value="60">60 meses</option>
+                <option value="48">48 meses</option>
+                <option value="36">36 meses (Quitação rápida)</option>
+            </select>
+
+            <div class="parcela-box">
+                <small>Estimativa da Parcela:</small><br>
+                <span id="valorParcela">R$ 0,00</span>
+            </div>
+
+            <button type="submit">RESERVAR MINHA COTA NO WHATSAPP</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Dados para cálculo dinâmico (Mesmos valores da Tabela da Index)
+    const MOTOS = {
+        'BIZ125ES': {nome: 'BIZ 125 ES', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-Biz-125-ES-Preto-Black_0.webp', p:{36:550,48:417,60:339,80:261}},
+        'BIZ125EX': {nome: 'BIZ 125 EX', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Biz-125-EX-Branco-Perolizado-Pearl-Hakuji-White_0.webp', p:{36:680,48:516,60:419,80:323}},
+        'CG160START': {nome: 'CG 160 START', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-home-visao-da-lateral-direita-da-honda-cg-160-start.webp', p:{36:711,48:539,60:438,80:338}},
+        'CG160FAN': {nome: 'CG 160 FAN', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Fan-Vermelho-Perolizado.webp', p:{36:776,48:589,60:478,80:369}},
+        'CG160TITAN': {nome: 'CG 160 TITAN', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Titan-Cinza-Met%C3%A1lico.webp', p:{36:825,48:626,60:508,80:392}},
+        'CB300FABS': {nome: 'CB 300F TWISTER ABS', img: 'https://www.motopel.com.br/site/wp-content/uploads/2021/02/cb-300F-twister-azul.webp', p:{36:1032,48:783,60:636,80:491}},
+        'NXR160ABS': {nome: 'NXR 160 BROS ABS', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-NXR-160-Bros-ABS-Vermelho-Fighting-Red.webp', p:{36:920,48:698,60:566,80:437}},
+        'SAHARAABS': {nome: 'SAHARA 300 ABS', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Sahara-300-Cinza-Met%C3%A1lico.webp', p:{36:1246,48:945,60:767,80:590}},
+        'POP110': {nome: 'POP 110i ES', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Pop-110i-Es-Vermelho-Fighting-Red_0.webp', p:{36:436,48:331,60:268,80:207}},
+        'XR300L': {nome: 'XR 300L TORNADO', img: 'https://www.motopel.com.br/site/wp-content/uploads/2021/02/XR-300L-Tornado.webp', p:{36:1237,48:939,60:762,80:588}},
+        'PCXABS': {nome: 'PCX ABS', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/visao-da-lateral-direita-da-honda-pcx-azul.webp', p:{36:835,60:515}},
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const idMoto = urlParams.get('id');
+
+    function atualizarParcela() {
+        const prazo = document.getElementById('prazo').value;
+        if (idMoto && MOTOS[idMoto]) {
+            const valor = MOTOS[idMoto].p[prazo] || MOTOS[idMoto].p[60] || "Consultar";
+            document.getElementById('valorParcela').innerText = `R$ ${valor},00`;
+        }
+    }
+
+    if (idMoto && MOTOS[idMoto]) {
+        document.getElementById('motoNome').innerText = MOTOS[idMoto].nome;
+        document.getElementById('motoImg').src = MOTOS[idMoto].img;
+        atualizarParcela();
+    }
+
+    document.getElementById('consForm').onsubmit = function(e) {
+        e.preventDefault();
+        const nome = document.getElementById('nome').value;
+        const pressa = document.getElementById('pressa').value;
+        const prazo = document.getElementById('prazo').value;
+        const valor = document.getElementById('valorParcela').innerText;
+        const moto = idMoto ? MOTOS[idMoto].nome : "Não especificada";
+
+        const texto = `*SIMULAÇÃO DE CONSÓRCIO*%0A` +
+                      `-----------------------------%0A` +
+                      `*Moto:* ${moto}%0A` +
+                      `*Cliente:* ${nome}%0A` +
+                      `*Perfil:* ${pressa}%0A` +
+                      `*Plano:* ${prazo} meses%0A` +
+                      `*Parcela:* ${valor}%0A` +
+                      `-----------------------------%0A` +
+                      `_Interesse em reserva de cota_`;
+
+        window.location.href = `https://wa.me/5594992781498?text=${texto}`;
+    };
+</script>
+
+</body>
+</html>
