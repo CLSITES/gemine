@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Financiamento Honda — Análise de Crédito</title>
+    <style>
+        :root{--red:#c8102e;--black:#0b0b0b;--white:#ffffff;--gray:#f4f4f4}
+        *{box-sizing:border-box}
+        body{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin:0; padding:0;
+            background: #f0f0f0;
+            color: var(--black);
+        }
+        header{background: var(--black); color: #fff; padding: 15px; text-align: center; border-bottom: 3px solid var(--red)}
+        .container{max-width: 600px; margin: 20px auto; padding: 20px;}
+        
+        .card-moto{
+            background: #fff; border-radius: 15px; padding: 20px; 
+            text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        #motoImg{max-width: 200px; height: auto; margin-bottom: 10px}
+        #motoNomeDisplay{font-size: 22px; font-weight: 800; color: var(--red); margin: 0}
+
+        .form-card{
+            background: #fff; border-radius: 15px; padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h3{margin-top: 0; border-bottom: 2px solid #eee; padding-bottom: 10px}
+        
+        label{display: block; font-size: 13px; font-weight: 700; margin-bottom: 5px; color: #444}
+        input, select{
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;
+            margin-bottom: 15px; font-size: 15px; background: #fafafa;
+        }
+        input:focus{outline: none; border-color: var(--red); background: #fff}
+        
+        button{
+            width: 100%; padding: 16px; background: var(--red); color: #fff;
+            border: none; border-radius: 8px; font-size: 16px; font-weight: 800;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+        }
+        button:hover{background: #a50d26}
+
+        .info-nota{
+            font-size: 11px; color: #888; text-align: center; margin-top: 15px; line-height: 1.4;
+        }
+        .back-btn{
+            display: inline-block; margin-top: 20px; text-decoration: none;
+            color: var(--black); font-weight: 700; font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div style="font-weight:900; letter-spacing:-1px">HONDA REVEMAR</div>
+</header>
+
+<div class="container">
+    <a href="index.html" class="back-btn">← Escolher outra moto</a>
+
+    <div class="card-moto">
+        <img id="motoImg" src="" alt="Moto Selecionada">
+        <h2 id="motoNomeDisplay">Carregando...</h2>
+        <p id="motoPreco" style="font-size: 14px; color: #666"></p>
+    </div>
+
+    <div class="form-card">
+        <h3>Simulação de Financiamento</h3>
+        <form id="finForm">
+            <label>Nome Completo *</label>
+            <input type="text" id="nome" required placeholder="Ex: João Silva">
+
+            <label>CPF *</label>
+            <input type="text" id="cpf" required placeholder="000.000.000-00">
+
+            <label>Data de Nascimento *</label>
+            <input type="date" id="nascimento" required>
+
+            <label>Renda Mensal (R$) *</label>
+            <input type="number" id="renda" required placeholder="Ex: 2500">
+
+            <label>Valor de Entrada (R$)</label>
+            <input type="number" id="entrada" placeholder="Ex: 5000 (Deixe 0 para Sem Entrada)">
+
+            <label>Possui CNH Categoria A?</label>
+            <select id="cnh">
+                <option value="Sim">Sim, sou habilitado</option>
+                <option value="Não">Não possuo CNH A</option>
+            </select>
+
+            <label>Ocupação / Trabalho</label>
+            <select id="trabalho">
+                <option value="Assalariado">Assalariado (Carteira Assinada)</option>
+                <option value="Autônomo">Autônomo</option>
+                <option value="Empresário">Empresário / MEI</option>
+                <option value="Aposentado">Aposentado / Pensionista</option>
+            </select>
+
+            <button type="submit">ENVIAR PARA ANÁLISE NO WHATSAPP</button>
+        </form>
+        <p class="info-nota">Ao clicar, você será redirecionado para o WhatsApp do consultor Lucas para finalizar a análise de crédito. Seus dados estão protegidos.</p>
+    </div>
+</div>
+
+<script>
+    // Banco de dados idêntico ao da Index para manter a sincronia
+    const MOTOS = {
+        'BIZ125ES': {nome: 'BIZ 125 ES', preco: 'R$ 20.149', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-Biz-125-ES-Preto-Black_0.webp'},
+        'BIZ125EX': {nome: 'BIZ 125 EX', preco: 'R$ 24.420', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Biz-125-EX-Branco-Perolizado-Pearl-Hakuji-White_0.webp'},
+        'CG160START': {nome: 'CG 160 START', preco: 'R$ 24.665', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-home-visao-da-lateral-direita-da-honda-cg-160-start.webp'},
+        'CG160FAN': {nome: 'CG 160 FAN', preco: 'R$ 26.723', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Fan-Vermelho-Perolizado.webp'},
+        'CG160TITAN': {nome: 'CG 160 TITAN', preco: 'R$ 28.505', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Titan-Cinza-Met%C3%A1lico.webp'},
+        'CB300FABS': {nome: 'CB 300F TWISTER ABS', preco: 'R$ 33.829', img: 'https://www.motopel.com.br/site/wp-content/uploads/2021/02/cb-300F-twister-azul.webp'},
+        'CB300FCBS': {nome: 'CB 300F TWISTER CBS', preco: 'R$ 32.665', img: 'https://www.motopel.com.br/site/wp-content/uploads/2021/02/cb-300F-twister-cinza.webp'},
+        'NXR160BRS': {nome: 'NXR 160 BROS CBS', preco: 'R$ 31.004', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-NXR-160-Bros-CBS-Azul-Universe-Blue.webp'},
+        'NXR160ABS': {nome: 'NXR 160 BROS ABS', preco: 'R$ 32.251', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-NXR-160-Bros-ABS-Vermelho-Fighting-Red.webp'},
+        'XRE190': {nome: 'XRE 190', preco: 'R$ 31.389', img: 'https://www.motopel.com.br/site/wp-content/uploads/2021/02/xre-190-azul.webp'},
+        'SAHARAABS': {nome: 'SAHARA 300 ABS', preco: 'R$ 39.600', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Sahara-300-Cinza-Met%C3%A1lico.webp'},
+        'SAHARARALLY': {nome: 'SAHARA 300 RALLY', preco: 'R$ 40.438', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Sahara-300-Rally-Vermelho-Victory-Red.webp'},
+        'SAHARAADV': {nome: 'SAHARA 300 ADV', preco: 'R$ 40.830', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Sahara-300-Adventure-Bege%20Met%C3%A1lico.webp'},
+        'XR300L': {nome: 'XR 300L TORNADO', preco: 'R$ 39.683', img: 'https://www.motopel.com.br/site/wp-content/uploads/2021/02/XR-300L-Tornado.webp'},
+        'PCXCBS': {nome: 'PCX CBS', preco: 'R$ 24.159', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/imagem-home-honda-pcx-branco_0.webp'},
+        'PCXABS': {nome: 'PCX ABS', preco: 'R$ 26.313', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/visao-da-lateral-direita-da-honda-pcx-azul.webp'},
+        'ADV150': {nome: 'HONDA ADV', preco: 'R$ 32.320', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-ADV-Prata-Met%C3%A1lico_0.webp'},
+        'ELITE125': {nome: 'ELITE 125', preco: 'R$ 19.197', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Elite-125-Vermelho-Maceio-Red_0.webp'},
+        'POP110': {nome: 'POP 110i ES', preco: 'R$ 16.685', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Pop-110i-Es-Vermelho-Fighting-Red_0.webp'},
+        'CRF300F': {nome: 'CRF 300F', preco: 'R$ 30.580', img: 'https://www.motopel.com.br/site/wp-content/uploads/2025/08/capa-crf-300f.webp'},
+        'CB500HOR': {nome: 'CB 500 HORNET', preco: 'R$ 51.749', img: 'https://www.motopel.com.br/site/wp-content/uploads/2025/07/capa-hornet-500-2026-branca.webp'},
+        'CB500X': {nome: 'CB 500X', preco: 'R$ 51.749', img: 'https://www.motopel.com.br/site/wp-content/uploads/2025/07/capa-nx-500-2026-vermelha.webp'},
+        'NC750X': {nome: 'NC 750X', preco: 'R$ 67.027', img: 'https://www.motopel.com.br/site/wp-content/uploads/2021/02/nc-750x-MT-prata.png.webp'},
+        'CB1000R': {nome: 'CB 1000R', preco: 'R$ 92.060', img: 'https://www.motopel.com.br/site/wp-content/uploads/2021/02/cb-1000R-black-edition.png.webp'},
+        'AFRICATWIN': {nome: 'AFRICA TWIN 1100', preco: 'R$ 94.579', img: 'https://www.motopel.com.br/site/wp-content/uploads/2020/02/capa-africa-twin-mt.webp'}
+    };
+
+    // Pega o ID da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const idMoto = urlParams.get('id');
+
+    // Carrega dados da moto na tela
+    if (idMoto && MOTOS[idMoto]) {
+        document.getElementById('motoNomeDisplay').innerText = MOTOS[idMoto].nome;
+        document.getElementById('motoPreco').innerText = "Valor de referência: " + MOTOS[idMoto].preco;
+        document.getElementById('motoImg').src = MOTOS[idMoto].img;
+    } else {
+        document.getElementById('motoNomeDisplay').innerText = "Moto não selecionada";
+    }
+
+    // Envio do Formulário
+    document.getElementById('finForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const nome = document.getElementById('nome').value;
+        const cpf = document.getElementById('cpf').value;
+        const nasc = document.getElementById('nascimento').value;
+        const renda = document.getElementById('renda').value;
+        const entrada = document.getElementById('entrada').value || "0";
+        const cnh = document.getElementById('cnh').value;
+        const trabalho = document.getElementById('trabalho').value;
+        const moto = idMoto ? MOTOS[idMoto].nome : "Não especificada";
+
+        const texto = `*SIMULAÇÃO DE FINANCIAMENTO*%0A` +
+                      `-----------------------------%0A` +
+                      `*Moto:* ${moto}%0A` +
+                      `*Nome:* ${nome}%0A` +
+                      `*CPF:* ${cpf}%0A` +
+                      `*Nascimento:* ${nasc}%0A` +
+                      `*Renda:* R$ ${renda}%0A` +
+                      `*Entrada:* R$ ${entrada}%0A` +
+                      `*CNH:* ${cnh}%0A` +
+                      `*Ocupação:* ${trabalho}%0A` +
+                      `-----------------------------%0A` +
+                      `_Enviado pelo Simulador Revemar_`;
+
+        window.location.href = `https://wa.me/5594992781498?text=${texto}`;
+    });
+</script>
+
+</body>
+</html>
