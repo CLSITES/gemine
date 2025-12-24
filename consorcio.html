@@ -3,153 +3,126 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Consórcio Honda — Simulação de Parcelas</title>
+    <title>Consórcio Exclusive | Honda Revemar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;400;600;900&display=swap" rel="stylesheet">
     <style>
-        :root{--red:#c8102e;--black:#0b0b0b;--white:#ffffff;--green:#25D366}
-        *{box-sizing:border-box}
-        body{
-            font-family: 'Segoe UI', sans-serif;
-            margin:0; background: #f8f9fa; color: var(--black);
-        }
-        header{background: var(--black); color: #fff; padding: 15px; text-align: center; border-bottom: 3px solid var(--red)}
-        .container{max-width: 600px; margin: 20px auto; padding: 20px;}
+        :root { --red: #da291c; --bg: #050505; --glass: rgba(255,255,255,0.03); --border: rgba(255,255,255,0.1); }
+        * { box-sizing: border-box; }
+        body { background: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
         
-        .moto-info{
-            background: #fff; border-radius: 15px; padding: 20px; 
-            text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            margin-bottom: 20px; border-top: 5px solid var(--black);
+        header { 
+            padding: 25px; text-align: center; border-bottom: 1px solid var(--border); 
+            font-family: 'Syncopate'; letter-spacing: 3px; font-size: 14px; background: rgba(0,0,0,0.8);
         }
-        #motoImg{max-width: 180px; height: auto; margin-bottom: 10px}
-        
-        .form-card{
-            background: #fff; border-radius: 15px; padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        h2{margin: 0 0 20px 0; font-size: 20px; color: var(--red); text-align: center}
-        
-        label{display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: #444}
-        input, select{
-            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;
-            margin-bottom: 18px; font-size: 15px;
-        }
-        
-        .parcela-box{
-            background: #fff8e1; border: 1px solid #ffe082; padding: 15px;
-            border-radius: 8px; margin-bottom: 20px; text-align: center;
-        }
-        .parcela-box span{ font-size: 22px; font-weight: 800; color: #ffa000; }
 
-        button{
-            width: 100%; padding: 16px; background: var(--green); color: #fff;
-            border: none; border-radius: 8px; font-size: 16px; font-weight: 800;
-            cursor: pointer; text-transform: uppercase;
+        .container { max-width: 500px; margin: 40px auto; padding: 20px; }
+        
+        .moto-preview { 
+            text-align: center; margin-bottom: 30px; background: var(--glass); 
+            padding: 40px; border-radius: 40px; border: 1px solid var(--border);
+            position: relative;
         }
-        button:hover{filter: brightness(1.1)}
+        
+        #motoImg { 
+            max-width: 100%; height: auto; 
+            mix-blend-mode: lighten; 
+            filter: drop-shadow(0 20px 40px #000);
+            transition: 0.5s;
+        }
 
-        .back-btn{
-            display: inline-block; margin-bottom: 15px; text-decoration: none;
-            color: #666; font-size: 14px; font-weight: 600;
+        .parcela-box {
+            background: linear-gradient(135deg, var(--red), #800000);
+            padding: 30px; border-radius: 25px; margin: 25px 0;
+            box-shadow: 0 20px 40px rgba(218, 41, 28, 0.3);
         }
+        .parcela-box small { font-size: 10px; font-weight: 900; letter-spacing: 2px; opacity: 0.8; }
+        .parcela-box div { font-family: 'Syncopate'; font-size: 32px; font-weight: 700; margin-top: 5px; }
+
+        label { display: block; font-size: 10px; font-weight: 900; text-transform: uppercase; margin-bottom: 10px; opacity: 0.6; text-align: left; }
+        
+        select { 
+            width: 100%; padding: 18px; background: #111; border: 1px solid var(--border); 
+            border-radius: 15px; color: #fff; font-family: 'Inter'; font-weight: 700;
+            font-size: 16px; margin-bottom: 30px; cursor: pointer;
+        }
+
+        .btn-ia { 
+            width: 100%; padding: 22px; background: #fff; color: #000; border: none; 
+            border-radius: 20px; font-weight: 900; text-transform: uppercase; cursor: pointer; 
+            letter-spacing: 2px; font-size: 13px; transition: 0.4s; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-ia:hover { transform: scale(1.03); background: var(--red); color: #fff; }
+
+        .back-link { display: block; text-align: center; color: #555; text-decoration: none; font-size: 10px; margin-top: 30px; font-weight: 800; text-transform: uppercase; }
     </style>
 </head>
 <body>
 
-<header>
-    <div style="font-weight:900;">CONSÓRCIO HONDA REVEMAR</div>
-</header>
+<header>HONDA <span>REVEMAR</span></header>
 
 <div class="container">
-    <a href="index.html" class="back-btn">← Ver outros modelos</a>
-
-    <div class="moto-info">
+    <div class="moto-preview">
         <img id="motoImg" src="" alt="Moto">
-        <h2 id="motoNome" style="margin:0; color:var(--black)">Carregando...</h2>
-        <p id="motoPreco" style="font-size: 13px; color: #888; margin-top:5px"></p>
+        <h2 id="motoNome" style="font-family:'Syncopate'; font-size:18px; margin-top:20px;">...</h2>
+        
+        <div class="parcela-box">
+            <small>PARCELAS NO PLANO</small>
+            <div id="valorParcela">R$ 0,00</div>
+        </div>
+
+        <label>Escolha o Prazo</label>
+        <select id="prazo" onchange="atualizarParcela()">
+            <option value="80">80 Meses (Plano Easy)</option>
+            <option value="60">60 Meses (Plano Vou de Honda)</option>
+            <option value="36">36 Meses (Plano Especial)</option>
+        </select>
+
+        <button class="btn-ia" onclick="irParaIA()">
+            Contratar com Agente de IA
+        </button>
     </div>
 
-    <div class="form-card">
-        <h2>Simular meu Plano</h2>
-        <form id="consForm">
-            <label>Qual seu nome?</label>
-            <input type="text" id="nome" required placeholder="Digite seu nome completo">
-
-            <label>Você tem pressa para pegar a moto?</label>
-            <select id="pressa" required>
-                <option value="Sim, quero dar lance">Sim, quero dar lance (Rápido)</option>
-                <option value="Não, posso esperar sorteio">Não, quero pagar a menor parcela</option>
-            </select>
-
-            <label>Escolha o Prazo do Plano</label>
-            <select id="prazo" onchange="atualizarParcela()" required>
-                <option value="80">80 meses (Menor parcela)</option>
-                <option value="60">60 meses</option>
-                <option value="48">48 meses</option>
-                <option value="36">36 meses (Quitação rápida)</option>
-            </select>
-
-            <div class="parcela-box">
-                <small>Estimativa da Parcela:</small><br>
-                <span id="valorParcela">R$ 0,00</span>
-            </div>
-
-            <button type="submit">RESERVAR MINHA COTA NO WHATSAPP</button>
-        </form>
-    </div>
+    <a href="index.html" class="back-link">← Escolher Outro Modelo</a>
 </div>
 
 <script>
-    // Dados para cálculo dinâmico (Mesmos valores da Tabela da Index)
     const MOTOS = {
-        'BIZ125ES': {nome: 'BIZ 125 ES', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-Biz-125-ES-Preto-Black_0.webp', p:{36:550,48:417,60:339,80:261}},
-        'BIZ125EX': {nome: 'BIZ 125 EX', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Biz-125-EX-Branco-Perolizado-Pearl-Hakuji-White_0.webp', p:{36:680,48:516,60:419,80:323}},
-        'CG160START': {nome: 'CG 160 START', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-home-visao-da-lateral-direita-da-honda-cg-160-start.webp', p:{36:711,48:539,60:438,80:338}},
-        'CG160FAN': {nome: 'CG 160 FAN', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Fan-Vermelho-Perolizado.webp', p:{36:776,48:589,60:478,80:369}},
-        'CG160TITAN': {nome: 'CG 160 TITAN', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Titan-Cinza-Met%C3%A1lico.webp', p:{36:825,48:626,60:508,80:392}},
-        'CB300FABS': {nome: 'CB 300F TWISTER ABS', img: 'https://www.motopel.com.br/site/wp-content/uploads/2021/02/cb-300F-twister-azul.webp', p:{36:1032,48:783,60:636,80:491}},
-        'NXR160ABS': {nome: 'NXR 160 BROS ABS', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-NXR-160-Bros-ABS-Vermelho-Fighting-Red.webp', p:{36:920,48:698,60:566,80:437}},
-        'SAHARAABS': {nome: 'SAHARA 300 ABS', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Sahara-300-Cinza-Met%C3%A1lico.webp', p:{36:1246,48:945,60:767,80:590}},
-        'POP110': {nome: 'POP 110i ES', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Pop-110i-Es-Vermelho-Fighting-Red_0.webp', p:{36:436,48:331,60:268,80:207}},
-        'XR300L': {nome: 'XR 300L TORNADO', img: 'https://www.motopel.com.br/site/wp-content/uploads/2021/02/XR-300L-Tornado.webp', p:{36:1237,48:939,60:762,80:588}},
-        'PCXABS': {nome: 'PCX ABS', img: 'https://www.honda.com.br/motos/sites/hda/files/2025-08/visao-da-lateral-direita-da-honda-pcx-azul.webp', p:{36:835,60:515}},
+        'BIZ125ES': {p:{80:261,60:339,36:550}, img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-Biz-125-ES-Preto-Black_0.webp', nome:'BIZ 125 ES'},
+        'BIZ125EX': {p:{80:323,60:419,36:680}, img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Biz-125-EX-Branco-Perolizado-Pearl-Hakuji-White_0.webp', nome:'BIZ 125 EX'},
+        'CG160START': {p:{80:338,60:438,36:711}, img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-home-visao-da-lateral-direita-da-honda-cg-160-start.webp', nome:'CG 160 START'},
+        'CG160FAN': {p:{80:369,60:478,36:776}, img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Fan-Vermelho-Perolizado.webp', nome:'CG 160 FAN'},
+        'CG160TITAN': {p:{80:392,60:508,36:825}, img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-CG-160-Titan-Cinza-Met%C3%A1lico.webp', nome:'CG 160 TITAN'},
+        'CB300FABS': {p:{80:491,60:636,36:1032}, img:'https://www.motopel.com.br/site/wp-content/uploads/2021/02/cb-300F-twister-azul.webp', nome:'CB 300F TWISTER'},
+        'NXR160ABS': {p:{80:437,60:566,36:920}, img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Honda-NXR-160-Bros-ABS-Vermelho-Fighting-Red.webp', nome:'NXR 160 BROS'},
+        'SAHARAABS': {p:{80:590,60:767,36:1246}, img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Sahara-300-Cinza-Met%C3%A1lico.webp', nome:'SAHARA 300'},
+        'POP110': {p:{80:207,60:268,36:436}, img:'https://www.honda.com.br/motos/sites/hda/files/2025-08/Imagem-Home-Pop-110i-Es-Vermelho-Fighting-Red_0.webp', nome:'POP 110i ES'}
     };
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const idMoto = urlParams.get('id');
+    const id = new URLSearchParams(window.location.search).get('id');
 
     function atualizarParcela() {
         const prazo = document.getElementById('prazo').value;
-        if (idMoto && MOTOS[idMoto]) {
-            const valor = MOTOS[idMoto].p[prazo] || MOTOS[idMoto].p[60] || "Consultar";
-            document.getElementById('valorParcela').innerText = `R$ ${valor},00`;
+        if(id && MOTOS[id]) {
+            document.getElementById('valorParcela').innerText = `R$ ${MOTOS[id].p[prazo]},00`;
         }
     }
 
-    if (idMoto && MOTOS[idMoto]) {
-        document.getElementById('motoNome').innerText = MOTOS[idMoto].nome;
-        document.getElementById('motoImg').src = MOTOS[idMoto].img;
-        atualizarParcela();
+    function irParaIA() {
+        const prazo = document.getElementById('prazo').value;
+        const moto = MOTOS[id].nome;
+        const valor = MOTOS[id].p[prazo];
+        
+        // Link do seu Agente de IA com contexto
+        const baseIA = "https://agent.vendedoria.acelerabit.com/site-vendedor?vendedor_image=https://image2url.com/images/1763321623834-3529dfca-89a1-481c-9b53-be3324834b67.jpg&vendedor_name=Lucas Honda&vendedor_whatsapp=559492781498&vendedor_id=9115&vendedor_concessionaria=REVEMAR&region_id=1";
+        
+        window.location.href = baseIA;
     }
 
-    document.getElementById('consForm').onsubmit = function(e) {
-        e.preventDefault();
-        const nome = document.getElementById('nome').value;
-        const pressa = document.getElementById('pressa').value;
-        const prazo = document.getElementById('prazo').value;
-        const valor = document.getElementById('valorParcela').innerText;
-        const moto = idMoto ? MOTOS[idMoto].nome : "Não especificada";
-
-        const texto = `*SIMULAÇÃO DE CONSÓRCIO*%0A` +
-                      `-----------------------------%0A` +
-                      `*Moto:* ${moto}%0A` +
-                      `*Cliente:* ${nome}%0A` +
-                      `*Perfil:* ${pressa}%0A` +
-                      `*Plano:* ${prazo} meses%0A` +
-                      `*Parcela:* ${valor}%0A` +
-                      `-----------------------------%0A` +
-                      `_Interesse em reserva de cota_`;
-
-        window.location.href = `https://wa.me/5594992781498?text=${texto}`;
-    };
+    if(id && MOTOS[id]){
+        document.getElementById('motoNome').innerText = MOTOS[id].nome;
+        document.getElementById('motoImg').src = MOTOS[id].img;
+        atualizarParcela();
+    }
 </script>
 
 </body>
